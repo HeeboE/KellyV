@@ -1,7 +1,7 @@
 import socket
 import time
 
-my_ip = '192.168.68.59'
+my_ip = 'localhost'
 port = 4444
 server = socket.socket()
 server.bind((my_ip, port))
