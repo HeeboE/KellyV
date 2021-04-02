@@ -8,13 +8,16 @@ s = sched.scheduler(time.time, time.sleep)
 os = os.name
 
 GAP = 200
+pos = 0
 SPEED = 5
 GRAVITY = 0.3
 FLAP_VELOCITY = -10
 
 
-def Actor(arg, arg1):
-    pass
+def Actor(arg, arg1 = (0,0)):
+    pos = arg
+    state = arg1
+    return pos, state
 connectionest = False
 h4ui3hf2 = 4444
 gsjfhdkjghs5 = 'localhost'

