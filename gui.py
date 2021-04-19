@@ -1,34 +1,40 @@
-import tkinter as tk
+from tkinter import *
 
-root = tk.Tk()
+# TKINTER
+root = Tk()
+root.title("Admin Panel - KellyV")
+root.geometry("500x400")
+root.resizable(False, False)
 
-canvas1 = tk.Canvas(root, width=400, height=300, relief='raised')
-canvas1.pack()
+class KellyV:
+    def __init__(self, master):
+        mainFrame = Frame(master)
+        mainFrame.pack()
 
-label1 = tk.Label(root, text='Calculate the Square Root')
-label1.config(font=('helvetica', 14))
-canvas1.create_window(200, 25, window=label1)
+        # COMMAND HEADING
+        heading1 = Label(master, text="Command:")
+        heading1.pack()
+        heading1.place(x=30, y=350)
 
-label2 = tk.Label(root, text='Type your Number:')
-label2.config(font=('helvetica', 10))
-canvas1.create_window(200, 100, window=label2)
+        # VICTIM HEADING
+        heading2 = Label(master, text="Victims:")
+        heading2.pack()
+        heading2.place(x=350, y=15)
 
-entry1 = tk.Entry(root)
-canvas1.create_window(200, 140, window=entry1)
+        # OUTPUT HEADING
+        heading3 = Label(master, text="Output:")
+        heading3.pack()
+        heading3.place(x=30 ,y=15)
 
+        # COMMAND ENTRY
+        commandInput = Entry(master, width=60)
+        commandInput.pack()
+        commandInput.place(x=30, y=365)
 
-def getCommand():
-    x1 = entry1.get()
-    print(x1)
-    label3 = tk.Label(root, text=x1, font=('helvetica', 10))
-    canvas1.create_window(200, 210, window=label3)
+        # EXECUTE BUTTON
+        executeButton = Button(master, text="EXECUTE")
+        executeButton.pack()
+        executeButton.place(x=420, y=361)
 
-    label4 = tk.Label(root, text=x1, font=('helvetica', 10, 'bold'))
-    canvas1.create_window(200, 230, window=label4)
-
-
-button1 = tk.Button(text='Get the Square Root', command=getCommand(), bg='brown', fg='white',
-                    font=('helvetica', 9, 'bold'))
-canvas1.create_window(200, 180, window=button1)
-
+e = KellyV(root)
 root.mainloop()
