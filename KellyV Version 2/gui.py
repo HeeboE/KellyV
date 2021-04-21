@@ -9,6 +9,11 @@ root.title("KellyV Control Panel")
 root.geometry("500x400")
 root.resizable(False, False)
 q = queue.Queue()
+outputQ = queue.Queue()
+errorQ = queue.Queue()
+commandList = []
+index = 0
+
 
 # tkinter stuff
 class KellyV:
@@ -44,7 +49,6 @@ class KellyV:
 
                     else:
                         return False
-
 
 
             vcmd = (root.register(validate), '%P')
@@ -86,8 +90,41 @@ class KellyV:
             button_thing.place(x=200, y=75)
 
         def defaultMenu():
+            def outputSender(*args):
+                global index
+                commandList.insert(0, commandInput.get())
+                index = 0
+                commandInput.delete(0, 'end')
+                outputText.delete('1.0', 'end')
+                outputText.insert(END, str(outputQ.get()).replace('\\r', '\r').replace('\\n', '\n'))
 
-            t_sendcommand = lambda: threading.Thread(target=sendCommand, args=(commandInput.get(), q)).start()
+
+
+            def commandListerUp():
+                global index
+                try:
+                    fart = commandList[index]
+                    commandInput.delete(0, 'end')
+                    print(commandList)
+                    print(index)
+                    commandInput.insert(END, commandList[index])
+                    fart2 = commandList[index + 1]
+                    index += 1
+                except Exception as exce:
+                    print(exce)
+            def commandListerDown():
+                global index
+                try:
+                    index -= 1
+                    commandInput.delete(0, 'end')
+                    print(commandList)
+                    print(index)
+                    commandInput.insert(END, commandList[index])
+                except Exception as exce:
+                    print(exce)
+
+
+            t_sendcommand = lambda x=None: threading.Thread(target=sendCommand, args=(commandInput.get(), q, outputQ, errorQ)).start()
 
             for widget in root.winfo_children():
                 widget.destroy()
@@ -111,19 +148,22 @@ class KellyV:
             heading3.place(x=30 ,y=15)
 
             # OUTPUT TEXT
-            outputText = Text(master, width=17, height=17)
+            outputText = Text(master, width=38, height=17)
             outputText.pack()
-            outputText.place(x=37, y=30)
+            outputText.place(x=37, y=32)
+            outputText.config(wrap=WORD)
 
             # COMMAND ENTRY
             global commandInput
             commandInput = Entry(master, width=60)
-            root.bind('<Return>', t_sendcommand)
+            root.bind('<Return>', sequence(t_sendcommand, outputSender))
+            root.bind('<Up>', lambda x=None: commandListerUp())
+            root.bind('<Down>', lambda x=None: commandListerDown())
             commandInput.pack()
             commandInput.place(x=30, y=375)
 
             # EXECUTE BUTTON
-            executeButton = Button(master, text="Send", command=t_sendcommand)
+            executeButton = Button(master, text="Send", command=sequence(t_sendcommand, outputSender))
             executeButton.pack()
             executeButton.place(x=420, y=371)
 
@@ -132,6 +172,7 @@ class KellyV:
             listenButton = Button(master, text="Create Listener", command=lambda: createListener())
             listenButton.pack()
             listenButton.place(x=400, y=340)
+
         defaultMenu()
 e = KellyV(root)
 root.mainloop()
