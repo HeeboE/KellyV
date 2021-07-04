@@ -11,13 +11,20 @@ root.resizable(False, False)
 q = queue.Queue()
 outputQ = queue.Queue()
 errorQ = queue.Queue()
+listenMsgQ = queue.Queue()
+conQ = queue.Queue()
 commandList = []
+victimList = ['fsdf','dsfadf']
+victimAddrList = ['123','1324']
 index = 0
+conEST = False
+heading5 = None
 
 
 # tkinter stuff
 class KellyV:
     def __init__(self, master):
+
 
         def sequence(*functions):
             def func(*args, **kwargs):
@@ -53,8 +60,7 @@ class KellyV:
 
             vcmd = (root.register(validate), '%P')
 
-            t_listen = lambda: threading.Thread(target=listen, args=(str(ip_thing.get()), int(port_thing.get()), int(limit_thing.get()), q)).start()
-
+            t_listen = lambda: threading.Thread(target=listen, args=(str(ip_thing.get()), int(port_thing.get()), int(limit_thing.get()), q, listenMsgQ, conQ)).start()
             #first
             ip_text = Label(master, text="IP:")
             ip_text.pack()
@@ -90,13 +96,16 @@ class KellyV:
             button_thing.place(x=200, y=75)
 
         def defaultMenu():
+            global heading5
             def outputSender(*args):
                 global index
+                outputText.configure(state='normal')
                 commandList.insert(0, commandInput.get())
                 index = 0
                 commandInput.delete(0, 'end')
                 outputText.delete('1.0', 'end')
                 outputText.insert(END, str(outputQ.get()).replace('\\r', '\r').replace('\\n', '\n'))
+                outputText.configure(state='disabled')
 
 
 
@@ -145,12 +154,22 @@ class KellyV:
             # OUTPUT HEADING
             heading3 = Label(master, text="Output")
             heading3.pack()
-            heading3.place(x=30 ,y=15)
+            heading3.place(x=30, y=15)
+
+            # LISTENER MESsAGE HEADING
+            heading4 = Label(master, text='')
+            heading4.pack()
+            heading4.place(x=30, y=335)
+
+            heading5 = Label(master, text='')
+            heading5.pack()
+            heading5.place(x=30, y=315)
 
             # OUTPUT TEXT
             outputText = Text(master, width=38, height=17)
+            outputText.configure(state='disabled')
             outputText.pack()
-            outputText.place(x=37, y=32)
+            outputText.place(x=35, y=35)
             outputText.config(wrap=WORD)
 
             # COMMAND ENTRY
@@ -173,6 +192,35 @@ class KellyV:
             listenButton.pack()
             listenButton.place(x=400, y=340)
 
+            try:
+                heading4.config(text=str(listenMsgQ.get_nowait()))
+            except Exception as e:
+                print(e)
+
+
+        def onConnectionEST():
+            conEST = True
+            victim, victim_address = q.get_nowait()
+            heading5.config(text=f"Connection established with {victim_address}")
+
+            for victim in victimList:
+                print(victim)
+            for address in victimAddrList:
+                print(address)
+
+        def update():
+            try:
+                if conQ.get_nowait() == True:
+                    onConnectionEST()
+            except queue.Empty:
+                pass
+            root.after(1000, update)
+
+
         defaultMenu()
+
+        root.after(10, update)
+
 e = KellyV(root)
+
 root.mainloop()
