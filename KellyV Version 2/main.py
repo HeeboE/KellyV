@@ -3,21 +3,21 @@ import socket
 conEST = False
 
 def listen(ip: str, port: int, connectionLimit, q):
-    try:
+    #try:
         global conEST
         if connectionLimit != int:
             connectionLimit = 1
         print(port)
         server = socket.socket()
-        server.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, 10)
+        #server.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, 10)
         server.bind((ip, port))
         server.listen(connectionLimit)
         victim, victim_address = server.accept()
         conEST = True
         print('fart munke')
         q.put((victim, victim_address))
-    except Exception as e:
-        print(e)
+    #except Exception as e:
+       # print(e)
 
 
 def sendCommand(command: str, q, commandQ, errorQ):
