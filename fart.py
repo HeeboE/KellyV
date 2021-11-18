@@ -10,6 +10,7 @@ def main(sc):
         connectionest = True
     except Exception as e:
         print(e)
+
         if type(e) == ConnectionRefusedError:
             print("Listener Not Running\n")
         pass
