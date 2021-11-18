@@ -1,4 +1,4 @@
-import socket, sched, time, subprocess, os
+import socket, sched, time, subprocess
 s = sched.scheduler(time.time, time.sleep)
 def main(sc):
     connectionest = False
