@@ -15,13 +15,13 @@ class KellyV(Tk):
         self.bgImageLabel = None
         self.geometry("1920x1080")
         self.resizable(False, False)
-        self.DrawBackground()
-        self.Victims()
-        self.InitCustomTitleBar()
+        self.drawBackground()
+        self.victims()
+        self.initCustomTitleBar()
         self.canvas.pack()
 
 
-    def InitCustomTitleBar(self):
+    def initCustomTitleBar(self):
         self.canvas.create_line(10,40,1910,40, fill='gray')
         self.closeButtonImg = ImageTk.PhotoImage(Image.open("closeButton.png"))
         self.closeButton = self.canvas.create_image(1890, 35/2, image=self.closeButtonImg)
@@ -36,11 +36,11 @@ class KellyV(Tk):
     def closeWindow(self, event):
         self.destroy()
 
-    def DrawBackground(self):
+    def drawBackground(self):
         self.bgImage = ImageTk.PhotoImage(Image.open("bg.png"))
         self.canvas.create_image(0, 0, anchor=NW, image=self.bgImage)
 
-    def Victims(self):
+    def victims(self):
         pass
 
 
